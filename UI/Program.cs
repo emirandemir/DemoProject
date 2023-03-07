@@ -1,6 +1,5 @@
 ﻿using Business.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
-using DataAccessLayer.Concrete.InMemory;
 using System;
 
 namespace UI
@@ -9,12 +8,16 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            ProductManager productManager = new ProductManager(new EfProductDal());
-           
-            foreach(var item in productManager.GetAllProduct())
-            {
-                Console.WriteLine(item.ProductName);
-            }
+
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+
+            productmanager productmanager = new productmanager(new EfProductDal());
+            
+                Console.WriteLine("");
+            
+
+            
+
         }
     }
 }

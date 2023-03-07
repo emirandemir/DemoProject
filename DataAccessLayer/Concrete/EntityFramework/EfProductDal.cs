@@ -1,5 +1,7 @@
-﻿using DataAccessLayer.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccessLayer.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,54 +12,23 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
-    public class EfProductDal : IProductDal
+    public class EfProductDal : EfEntityRepositoryBase<Product, Context>, IProductDal
     {
-        public void Add(Product entity)
+        public List<ProductDetailDto> GetProductDetailDtos()
         {
-            using (Context context = new Context())
+            using (Context context = new Context)
             {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
+                var result = from p in context.Products
+                             join c in context.Categories
+                             on p.CategoryId equals c.CategoryId
+                             select new ProductDetailDto { ProductId = p.ProductId, ProductName = p.ProductName,
+                                                        CategoryName = c.CategoryName, UnitsInStock = p.UnitsInStock };
 
-        public void Delete(Product entity)
-        {
-            using (Context context = new Context())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
+                return result.ToList();
             }
-        }
 
-        public Product Get(Expression<Func<Product, bool>> filter)
-        {
-            using (Context context = new Context())
-            {
-                return context.Set<Product>().Where(filter).SingleOrDefault();
-            }
-        }
-
-        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
-        {
-            using (Context context = new Context())
-            {
-                return filter == null 
-                    ? context.Set<Product>().ToList()    //filtre null'sa tüm verileri getir
-                    : context.Set<Product>().Where(filter).ToList(); //filtre varsa filtrele getir
-            }
-        }
-
-        public void Update(Product entity)
-        {
-            using (Context context = new Context())
-            {
-                var UpdatedEntity = context.Entry(entity);
-                UpdatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
+            
+           
         }
     }
 }
