@@ -12,6 +12,8 @@ namespace UI
             CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
             productmanager productmanager = new productmanager(new EfProductDal());
+
+            productmanager.GetAllProduct();
             
                 Console.WriteLine("");
             

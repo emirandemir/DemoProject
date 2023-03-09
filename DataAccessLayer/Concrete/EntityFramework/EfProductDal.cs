@@ -16,7 +16,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
     {
         public List<ProductDetailDto> GetProductDetailDtos()
         {
-            using (Context context = new Context)
+            using (Context context = new Context())
             {
                 var result = from p in context.Products
                              join c in context.Categories
