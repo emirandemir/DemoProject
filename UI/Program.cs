@@ -15,7 +15,7 @@ namespace UI
 
             productmanager.GetAllProduct();
             
-                Console.WriteLine("");
+            Console.WriteLine("");
             
 
             

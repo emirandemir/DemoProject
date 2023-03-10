@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using Core.CrossCuttingConcers.Validation;
 using Core.Utilities.Interceptors;
 using FluentValidation;
 using System;
@@ -21,7 +22,8 @@ namespace Core.Aspects.Autofac.Validation
 
             _validatorType = validatorType;
         }
-        protected override void OnBefore(IInvocation invocation)
+
+        protected override void OnBefore(IInvocation invocation)    //Beforu override ederek öncesinde çalışacağını söyledik.
         {
             var validator = (IValidator)Activator.CreateInstance(_validatorType);
             var entityType = _validatorType.BaseType.GetGenericArguments()[0];
